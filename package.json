@@ -1,7 +1,6 @@
 {
   "name": "igme430-project1",
   "version": "1.0.0",
-  "description": "Custom API project for IGME 430",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server.js",
@@ -12,12 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/kaigidwani/igme430-project1.git"
   },
-  "author": "Kai Gidwani kpg8244@rit.edu",
+  "author": "Kai Gidwani",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/kaigidwani/igme430-project1/issues"
   },
   "homepage": "https://github.com/kaigidwani/igme430-project1#readme",
+  "description": "",
   "devDependencies": {
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
