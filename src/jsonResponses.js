@@ -26,24 +26,27 @@ const getBooks = (request, response) => {
 
 // return searched book as JSON
 const getBook = (request, response) => {
+  // default failure json message
+  const responseJSON = {
+    message: 'All fields are required.',
+  };
+
   // get the title field
   const { title } = request.body;
 
   // If the book doesn't exist
   if (!books[title]) {
     // Update the error message and ID, and return the error
-    responseJSON.message = `No book with title ${title}`
+    responseJSON.message = `No book with title ${title}`;
     responseJSON.id = 'bookNotFound';
     return respondJSON(request, response, 404, responseJSON);
   }
 
   const searchedBook = books[title];
 
-  const responseJSON = {
-    searchedBook,
-  };
+  respondJSON.searchedBook = searchedBook;
 
-  respondJSON(request, response, 200, responseJSON);
+  return respondJSON(request, response, 200, responseJSON);
 };
 
 // function to add a book from a POST body
@@ -54,10 +57,12 @@ const addBook = (request, response) => {
   };
 
   // get fields
-  const { author, country, language, link, pages, title, year, genres, rating } = request.body;
+  const {
+    author, country, language, link, pages, title, year, genres,
+  } = request.body;
 
   // check to make sure we have all fields, except rating as it is optional
-  if (!author || !country || !language || !link || !pages || !title || !year || !genres ) {
+  if (!author || !country || !language || !link || !pages || !title || !year || !genres) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -105,18 +110,18 @@ const addBookReview = (request, response) => {
   const { title, rating } = request.body;
 
   // check to make sure we have all fields
-  if (!title || !rating ) {
+  if (!title || !rating) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
 
   // default status code to 204 updated
-  let responseCode = 204;
+  const responseCode = 204;
 
   // If the book doesn't exist
   if (!books[title]) {
     // Update the error message and ID, and return the error
-    responseJSON.message = `No book to rate with title ${title}`
+    responseJSON.message = `No book to rate with title ${title}`;
     responseJSON.id = 'noBookToRate';
     return respondJSON(request, response, 400, responseJSON);
   }
