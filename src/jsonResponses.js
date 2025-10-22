@@ -24,6 +24,11 @@ const getAllBooks = (request, response) => {
   respondJSON(request, response, 200, responseJSON);
 };
 
+
+// TODO: Check w Austin if the getBook functionality looks good.
+// If so then make 2 more GET endpoints like it!
+// Ideas: Get book by language, get book by author
+
 // return searched book as JSON
 const getBook = (request, response) => {
   // default failure json message
