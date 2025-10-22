@@ -1,4 +1,4 @@
-const users = {};
+const books = {};
 
 const respondJSON = (request, response, status, object) => {
   const content = JSON.stringify(object);
@@ -15,27 +15,27 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
-// return user object as JSON
-const getUsers = (request, response) => {
+// return book object as JSON
+const getBooks = (request, response) => {
   const responseJSON = {
-    users,
+    books,
   };
 
   respondJSON(request, response, 200, responseJSON);
 };
 
-// function to add a user from a POST body
-const addUser = (request, response) => {
-  // default json message
+// function to add a book from a POST body
+const addBook = (request, response) => {
+  // default failure json message
   const responseJSON = {
-    message: 'Name and age are both required.',
+    message: 'All fields are required.',
   };
 
-  // get name and age
-  const { name, age } = request.body;
+  // get fields
+  const { author, country, language, link, pages, title, year, genres } = request.body;
 
   // check to make sure we have both fields
-  if (!name || !age) {
+  if (!author || !country || !language || !link || !pages || !title || !year || !genres ) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -43,18 +43,24 @@ const addUser = (request, response) => {
   // default status code to 204 updated
   let responseCode = 204;
 
-  // If the user doesn't exist yet
-  if (!users[name]) {
-    // Set the status code to 201 (created) and create an empty user
+  // If the book doesn't exist yet
+  if (!books[title]) {
+    // Set the status code to 201 (created) and create an empty book
     responseCode = 201;
-    users[name] = {
-      name,
+    books[title] = {
+      title,
     };
   }
 
-  // add or update fields for this user name
+  // add or update fields for this book
 
-  users[name].age = age;
+  books[title].author = author;
+  books[title].country = country;
+  books[title].language = language;
+  books[title].link = link;
+  books[title].pages = pages;
+  books[title].year = year;
+  books[title].genres = genres;
 
   // if response is created, then set our created message
   // and sent response with a message
@@ -80,7 +86,7 @@ const notFound = (request, response) => {
 
 // public exports
 module.exports = {
-  getUsers,
-  addUser,
+  getBooks,
+  addBook,
   notFound,
 };
