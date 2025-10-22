@@ -34,7 +34,7 @@ const addBook = (request, response) => {
   // get fields
   const { author, country, language, link, pages, title, year, genres } = request.body;
 
-  // check to make sure we have both fields
+  // check to make sure we have all fields
   if (!author || !country || !language || !link || !pages || !title || !year || !genres ) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
