@@ -15,10 +15,32 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
-// return book object as JSON
+// return all books as JSON
 const getBooks = (request, response) => {
   const responseJSON = {
     books,
+  };
+
+  respondJSON(request, response, 200, responseJSON);
+};
+
+// return searched book as JSON
+const getBook = (request, response) => {
+  // get the title field
+  const { title } = request.body;
+
+  // If the book doesn't exist
+  if (!books[title]) {
+    // Update the error message and ID, and return the error
+    responseJSON.message = `No book with title ${title}`
+    responseJSON.id = 'bookNotFound';
+    return respondJSON(request, response, 404, responseJSON);
+  }
+
+  const searchedBook = books[title];
+
+  const responseJSON = {
+    searchedBook,
   };
 
   respondJSON(request, response, 200, responseJSON);
@@ -32,9 +54,9 @@ const addBook = (request, response) => {
   };
 
   // get fields
-  const { author, country, language, link, pages, title, year, genres } = request.body;
+  const { author, country, language, link, pages, title, year, genres, rating } = request.body;
 
-  // check to make sure we have all fields
+  // check to make sure we have all fields, except rating as it is optional
   if (!author || !country || !language || !link || !pages || !title || !year || !genres ) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
@@ -72,6 +94,47 @@ const addBook = (request, response) => {
   return respondJSON(request, response, responseCode, {});
 };
 
+// function to add a book review from a POST body
+const addBookReview = (request, response) => {
+  // default failure json message
+  const responseJSON = {
+    message: 'Both title and rating are required.',
+  };
+
+  // get fields
+  const { title, rating } = request.body;
+
+  // check to make sure we have all fields
+  if (!title || !rating ) {
+    responseJSON.id = 'missingParams';
+    return respondJSON(request, response, 400, responseJSON);
+  }
+
+  // default status code to 204 updated
+  let responseCode = 204;
+
+  // If the book doesn't exist
+  if (!books[title]) {
+    // Update the error message and ID, and return the error
+    responseJSON.message = `No book to rate with title ${title}`
+    responseJSON.id = 'noBookToRate';
+    return respondJSON(request, response, 400, responseJSON);
+  }
+
+  // add or update fields for this book
+
+  books[title].rating = rating;
+
+  // if response is created, then set our created message
+  // and sent response with a message
+  if (responseCode === 201) {
+    responseJSON.message = 'Created Successfully';
+    return respondJSON(request, response, responseCode, responseJSON);
+  }
+
+  return respondJSON(request, response, responseCode, {});
+};
+
 // function for 404 not found requests with message
 const notFound = (request, response) => {
   // create error message for response
@@ -87,6 +150,8 @@ const notFound = (request, response) => {
 // public exports
 module.exports = {
   getBooks,
+  getBook,
   addBook,
+  addBookReview,
   notFound,
 };
