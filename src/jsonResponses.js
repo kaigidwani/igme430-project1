@@ -16,7 +16,7 @@ const respondJSON = (request, response, status, object) => {
 };
 
 // return all books as JSON
-const getBooks = (request, response) => {
+const getAllBooks = (request, response) => {
   const responseJSON = {
     books,
   };
@@ -154,7 +154,7 @@ const notFound = (request, response) => {
 
 // public exports
 module.exports = {
-  getBooks,
+  getAllBooks,
   getBook,
   addBook,
   addBookReview,
