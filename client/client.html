@@ -40,8 +40,9 @@
         if(obj.message){
           content.innerHTML += `<p>${obj.message}</p>`;
         }
-        if(obj.users) {
-          content.innerHTML += `<p>${JSON.stringify(obj.users)}</p>`;
+        if(obj.books) {
+          // Display the books, but shorten the result to only 300 chars
+          content.innerHTML += `<p>${JSON.stringify(obj.books).substring(0, 300) + '...'}</p>`;
         }
       }
     };
@@ -136,7 +137,7 @@
     };
 
     const sendAllBooksFetchRequest = async (form) => {
-      const url = form.querySelector('#urlField').value;
+      const url = form.getAttribute('action');
       const method = form.querySelector('#methodSelect').value;
 
       const response = await fetch(url, {
