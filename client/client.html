@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Books API Test App</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
@@ -121,27 +121,109 @@
 </head>
 <body>
   <section id="top">
-    <h3>POST Status Code Tests</h3>
-    <form id="nameForm" action="/addUser" method="post">
-      <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
-      <label for="age">Age: </label>
-      <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
-      <input type="submit" value="Add User" />
+    <h1>Books API Test App</h1>
+    <hr>
+
+    <form id="addBookForm" action="/addBook" method="post">
+      <h3>Add a new book</h3>
+      <label for="author">Author: </label>
+      <input id="authorField" type="text" name="author" />
+      <br>
+      <label for="country">Country: </label>
+      <input id="countryField" type="text" name="country" />
+      <br>
+      <label for="language">Language: </label>
+      <input id="languageField" type="text" name="language" />
+      <br>
+      <label for="link">Link: </label>
+      <input id="linkField" type="text" name="link" />
+      <br>
+      <label for="pages">Pages: </label>
+      <input id="pagesField" type="number" name="pages" />
+      <br>
+      <label for="title">Title: </label>
+      <input id="titleField" type="text" name="title" />
+      <br>
+      <label for="year">Year: </label>
+      <input id="yearField" type="number" name="year" />
+      <br>
+      <label for="genres">Genres (optional): </label>
+      <input id="genre1Field" type="text" name="genre1" />
+      <input id="genre2Field" type="text" name="genre2" />
+      <br>
+      <input type="submit" value="Add Book" />
     </form>
-    <form id="userForm" action="/getUsers" method="get">
-      <select id='urlField'>
-        <option value='/getUsers'>/getUsers</option>
-        <option value='/notReal'>/notReal</option>
-      </select>
+    <pre class="result">Output</pre>
+    <hr>
+
+    <form id="addBookReview" action="/addBookReview" method="post">
+      <h3>Add a new book review</h3>
+      <label for="title">Title: </label>
+      <input id="titleField" type="text" name="title" />
+      <br>
+      <label for="rating">Rating: </label>
+      <input id="ratingField" type="number" name="rating" min="1" max="5" step="1"/>
+      <br>
+      <input type="submit" value="Add Book Review" />
+    </form>
+    <pre class="result">Output</pre>
+    <hr>
+
+    <form id="getAllBooksForm" action="/getAllBooks" method="get">
+      <h3>Test retrieving all books</h3>
       <select id="methodSelect">
         <option value="get">GET</option>
         <option value="head">HEAD</option>
       </select>
-      <input type="submit" value="Get User" />
+      <br>
+      <input type="submit" value="Get All Books" />
     </form>
-  </section>
-  <section id="content">
-  </section>
+    <pre class="result">Output</pre>
+    <hr>
+
+    <form id="getBookByTitleForm" action="/getBookByTitle" method="get">
+      <h3>Test retrieving a book by title</h3>
+      <label for="title">Title: </label>
+      <input id="titleField" type="text" name="title" />
+      <br>
+      <select id="methodSelect">
+        <option value="get">GET</option>
+        <option value="head">HEAD</option>
+      </select>
+      <br>
+      <input type="submit" value="Get Book By Title" />
+    </form>
+    <pre class="result">Output</pre>
+    <hr>
+
+    <form id="getBooksByAuthorForm" action="/getBooksByAuthor" method="get">
+      <h3>Test retrieving books by author</h3>
+      <label for="author">Author: </label>
+      <input id="authorField" type="text" name="author" />
+      <br>
+      <select id="methodSelect">
+        <option value="get">GET</option>
+        <option value="head">HEAD</option>
+      </select>
+      <br>
+      <input type="submit" value="Get Books By Author" />
+    </form>
+    <pre class="result">Output</pre>
+    <hr>
+
+    <form id="getBooksByLanguageForm" action="/getBooksByLanguage" method="get">
+      <h3>Test retrieving books by language</h3>
+      <label for="language">Language: </label>
+      <input id="language" type="text" name="language" />
+      <br>
+      <select id="methodSelect">
+        <option value="get">GET</option>
+        <option value="head">HEAD</option>
+      </select>
+      <br>
+      <input type="submit" value="Get Books By Language" />
+    </form>
+    <pre class="result">Output</pre>
+    <hr><br>
 </body>
 </html>
