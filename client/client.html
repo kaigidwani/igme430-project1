@@ -76,7 +76,66 @@
       handleResponse(response);
     };
 
+    //Uses fetch to send a postRequest. Marksed as async because we use await
+    //within it.
+    const sendPostBook = async (addBookForm) => {
+      //Grab all the info from the form
+      const url = addBookForm.getAttribute('action');
+      const method = addBookForm.getAttribute('method');
+      
+      const authorField = addBookForm.querySelector('#authorField');
+      const countryField = addBookForm.querySelector('#countryField');
+      const languageField = addBookForm.querySelector('#languageField');
+      const linkField = addBookForm.querySelector('#linkField');
+      const pagesField = addBookForm.querySelector('#pagesField');
+      const titleField = addBookForm.querySelector('#titleField');
+      const yearField = addBookForm.querySelector('#yearField');
+      const genre1Field = addBookForm.querySelector('#genre1Field');
+      const genre2Field = addBookForm.querySelector('#genre2Field');
+
+      //Build a data string in the FORM-URLENCODED format.
+      const formData = `author=${authorField.value}` + 
+                       `&country=${countryField.value}` +  
+                       `&language=${languageField.value}` +  
+                       `&link=${linkField.value}` +  
+                       `&pages=${pagesField.value}` +  
+                       `&title=${titleField.value}` +  
+                       `&year=${yearField.value}` +  
+                       `&genre1=${genre1Field.value}` +
+                       `&genre2=${genre2Field.value}`;
+
+      //Make a fetch request and await a response. Set the method to
+      //the one provided by the form (POST). Set the headers. Content-Type
+      //is the type of data we are sending. Accept is the data we would like
+      //in response. Then add our FORM-URLENCODED string as the body of the request.
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body: formData,
+      })
+
+      //Once we have a response, handle it.
+      handleResponse(response);
+    };
+
     const sendFetchRequest = async (form) => {
+      const url = form.querySelector('#urlField').value;
+      const method = form.querySelector('#methodSelect').value;
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      handleResponse(response, method === 'get');
+    };
+
+    const sendAllBooksFetchRequest = async (form) => {
       const url = form.querySelector('#urlField').value;
       const method = form.querySelector('#methodSelect').value;
 
@@ -92,27 +151,29 @@
 
     //Init function is called when window.onload runs (set below).
     const init = () => {
-      //Grab the form
-      const nameForm = document.querySelector('#nameForm');
-      const userForm = document.querySelector('#userForm');
-      
-      //Create an addUser function that cancels the forms default action and
-      //calls our sendPost function above.
-      const addUser = (e) => {
+      //Grab the forms
+      const addBookForm = document.querySelector('#addBookForm');
+
+      const getAllBooksForm = document.querySelector('#getAllBooksForm');
+
+      // Create addBook function that cancels the form's default action
+      // and calls our sendPostBook function above.
+      const addBook = (e) => {
         e.preventDefault();
-        sendPost(nameForm);
+        sendPostBook(addBookForm);
         return false;
       }
 
-      const sendUser = (e) => {
+      const sendAllBooks = (e) => {
         e.preventDefault();
-        sendFetchRequest(userForm);
+        sendAllBooksFetchRequest(getAllBooksForm);
         return false;
-      };
-      
-      //Call addUser when the submit event fires on the form.
-      nameForm.addEventListener('submit', addUser);
-      userForm.addEventListener('submit', sendUser);
+      }
+
+      // Call functions when the submit event fires on the form.
+      addBookForm.addEventListener('submit', addBook);
+
+      getAllBooksForm.addEventListener('submit', sendAllBooks)
     };
 
     //When the window loads, run init.
@@ -122,6 +183,10 @@
 <body>
   <section id="top">
     <h1>Books API Test App</h1>
+    <hr>
+    </section>
+    <section id="content">
+    </section>
     <hr>
 
     <form id="addBookForm" action="/addBook" method="post">
@@ -147,7 +212,7 @@
       <label for="year">Year: </label>
       <input id="yearField" type="number" name="year" />
       <br>
-      <label for="genres">Genres (optional): </label>
+      <label for="genres">Genres: </label>
       <input id="genre1Field" type="text" name="genre1" />
       <input id="genre2Field" type="text" name="genre2" />
       <br>

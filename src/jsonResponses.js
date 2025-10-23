@@ -119,11 +119,12 @@ const addBook = (request, response) => {
 
   // get fields
   const {
-    author, country, language, link, pages, title, year, genres,
+    author, country, language, link, pages, title, year, genre1, genre2,
   } = request.body;
 
-  // check to make sure we have all fields, except rating as it is optional
-  if (!author || !country || !language || !link || !pages || !title || !year || !genres) {
+  // check to make sure we have all fields
+  if (!author || !country || !language || !link
+      || !pages || !title || !year || !genre1 || !genre2) {
     responseJSON.id = 'missingParams';
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -132,25 +133,26 @@ const addBook = (request, response) => {
   let responseCode = 204;
 
   // Check if the book exists in the list already
-  const book = books.find((b) => b.title === title);
+  const bookExists = books.find((b) => b.title === title);
 
   // If the book doesn't exist yet
-  if (!book) {
+  if (!bookExists) {
     // Set the status code to 201 (created) and add the empty book
     responseCode = 201;
-    books.push(book);
+    // Pushes an empty object
+    books.push({});
   }
 
   // add or update fields for this book
 
-  book.title = title;
-  book.author = author;
-  book.country = country;
-  book.language = language;
-  book.link = link;
-  book.pages = pages;
-  book.year = year;
-  book.genres = genres;
+  books[books.length - 1].author = author;
+  books[books.length - 1].country = country;
+  books[books.length - 1].language = language;
+  books[books.length - 1].link = link;
+  books[books.length - 1].pages = Number(pages);
+  books[books.length - 1].title = title;
+  books[books.length - 1].year = Number(year);
+  books[books.length - 1].genres = [genre1, genre2];
 
   // if response is created, then set our created message
   // and sent response with a message
