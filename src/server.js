@@ -48,8 +48,12 @@ const handleGet = (request, response, parsedUrl) => {
     htmlHandler.getCSS(request, response);
   } else if (parsedUrl.pathname === '/getAllBooks') {
     jsonHandler.getAllBooks(request, response);
-  } else if (parsedUrl.pathname === '/getBook') {
-    jsonHandler.getBook(request, response);
+  } else if (parsedUrl.pathname === '/getBookByTitle') {
+    jsonHandler.getBookByTitle(request, response);
+  } else if (parsedUrl.pathname === '/getBookByLanguage') {
+    jsonHandler.getBookByLanguage(request, response);
+  } else if (parsedUrl.pathname === '/getBookByAuthor') {
+    jsonHandler.getBookByAuthor(request, response);
   } else if (parsedUrl.pathname === '/') {
     htmlHandler.getIndex(request, response);
   } else {

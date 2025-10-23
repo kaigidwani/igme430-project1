@@ -1,4 +1,4 @@
-const books = {};
+const books = require('../data/books.json');
 
 const respondJSON = (request, response, status, object) => {
   const content = JSON.stringify(object);
@@ -15,6 +15,8 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
+// === GET endpoints ===
+
 // return all books as JSON
 const getAllBooks = (request, response) => {
   const responseJSON = {
@@ -24,13 +26,8 @@ const getAllBooks = (request, response) => {
   respondJSON(request, response, 200, responseJSON);
 };
 
-
-// TODO: Check w Austin if the getBook functionality looks good.
-// If so then make 2 more GET endpoints like it!
-// Ideas: Get book by language, get book by author
-
-// return searched book as JSON
-const getBook = (request, response) => {
+// return searched book by title as JSON
+const getBookByTitle = (request, response) => {
   // default failure json message
   const responseJSON = {
     message: 'All fields are required.',
@@ -39,20 +36,79 @@ const getBook = (request, response) => {
   // get the title field
   const { title } = request.body;
 
+  // .filter gets an array of items
+  // use .find instead to get only the first item
+  const book = books.find((b) => b.title === title);
+
   // If the book doesn't exist
-  if (!books[title]) {
+  if (!book) {
     // Update the error message and ID, and return the error
     responseJSON.message = `No book with title ${title}`;
     responseJSON.id = 'bookNotFound';
     return respondJSON(request, response, 404, responseJSON);
   }
 
-  const searchedBook = books[title];
-
-  respondJSON.searchedBook = searchedBook;
+  // Add the book to the JSON response
+  responseJSON.searchedBook = book;
 
   return respondJSON(request, response, 200, responseJSON);
 };
+
+// return searched book by language as JSON
+const getBookByLanguage = (request, response) => {
+  // default failure json message
+  const responseJSON = {
+    message: 'Language field is required.',
+  };
+
+  // get the language field
+  const { language } = request.body;
+
+  // Using .filter to get array of books
+  const book = books.filter((b) => b.language === language);
+
+  // If no books exist with that language
+  if (!book) {
+    // Update the error message and ID, and return the error
+    responseJSON.message = `No books with language ${language}`;
+    responseJSON.id = 'bookNotFound';
+    return respondJSON(request, response, 404, responseJSON);
+  }
+
+  // Add the books to the JSON response
+  responseJSON.searchedBooks = book;
+
+  return respondJSON(request, response, 200, responseJSON);
+};
+
+// return searched book by author as JSON
+const getBookByAuthor = (request, response) => {
+  // default failure json message
+  const responseJSON = {
+    message: 'Author field is required.',
+  };
+
+  // get the author field
+  const { author } = request.body;
+
+  // Using .filter to get array of books
+  const book = books.filter((b) => b.author === author);
+
+  // If no books exist by that author
+  if (!book) {
+    // Update the error message and ID, and return the error
+    responseJSON.message = `No books with author ${author}`;
+    responseJSON.id = 'bookNotFound';
+    return respondJSON(request, response, 404, responseJSON);
+  }
+
+  // Add the books to the JSON response
+  responseJSON.searchedBooks = book;
+
+  return respondJSON(request, response, 200, responseJSON);
+};
+
+// === POST endpoints ===
 
 // function to add a book from a POST body
 const addBook = (request, response) => {
@@ -75,24 +131,26 @@ const addBook = (request, response) => {
   // default status code to 204 updated
   let responseCode = 204;
 
+  // Check if the book exists in the list already
+  const book = books.find((b) => b.title === title);
+
   // If the book doesn't exist yet
-  if (!books[title]) {
-    // Set the status code to 201 (created) and create an empty book
+  if (!book) {
+    // Set the status code to 201 (created) and add the empty book
     responseCode = 201;
-    books[title] = {
-      title,
-    };
+    books.push(book);
   }
 
   // add or update fields for this book
 
-  books[title].author = author;
-  books[title].country = country;
-  books[title].language = language;
-  books[title].link = link;
-  books[title].pages = pages;
-  books[title].year = year;
-  books[title].genres = genres;
+  book.title = title;
+  book.author = author;
+  book.country = country;
+  book.language = language;
+  book.link = link;
+  book.pages = pages;
+  book.year = year;
+  book.genres = genres;
 
   // if response is created, then set our created message
   // and sent response with a message
@@ -123,8 +181,11 @@ const addBookReview = (request, response) => {
   // default status code to 204 updated
   const responseCode = 204;
 
+  // Check if the book exists in the list already
+  const book = books.find((b) => b.title === title);
+
   // If the book doesn't exist
-  if (!books[title]) {
+  if (!book) {
     // Update the error message and ID, and return the error
     responseJSON.message = `No book to rate with title ${title}`;
     responseJSON.id = 'noBookToRate';
@@ -133,7 +194,7 @@ const addBookReview = (request, response) => {
 
   // add or update fields for this book
 
-  books[title].rating = rating;
+  book.rating = rating;
 
   // if response is created, then set our created message
   // and sent response with a message
@@ -160,7 +221,9 @@ const notFound = (request, response) => {
 // public exports
 module.exports = {
   getAllBooks,
-  getBook,
+  getBookByTitle,
+  getBookByLanguage,
+  getBookByAuthor,
   addBook,
   addBookReview,
   notFound,
