@@ -79,20 +79,20 @@
 
     //Uses fetch to send a postRequest. Marksed as async because we use await
     //within it.
-    const sendPostBook = async (addBookForm) => {
+    const sendPostBook = async (form) => {
       //Grab all the info from the form
-      const url = addBookForm.getAttribute('action');
-      const method = addBookForm.getAttribute('method');
+      const url = form.getAttribute('action');
+      const method = form.getAttribute('method');
       
-      const authorField = addBookForm.querySelector('#authorField');
-      const countryField = addBookForm.querySelector('#countryField');
-      const languageField = addBookForm.querySelector('#languageField');
-      const linkField = addBookForm.querySelector('#linkField');
-      const pagesField = addBookForm.querySelector('#pagesField');
-      const titleField = addBookForm.querySelector('#titleField');
-      const yearField = addBookForm.querySelector('#yearField');
-      const genre1Field = addBookForm.querySelector('#genre1Field');
-      const genre2Field = addBookForm.querySelector('#genre2Field');
+      const authorField = form.querySelector('#authorField');
+      const countryField = form.querySelector('#countryField');
+      const languageField = form.querySelector('#languageField');
+      const linkField = form.querySelector('#linkField');
+      const pagesField = form.querySelector('#pagesField');
+      const titleField = form.querySelector('#titleField');
+      const yearField = form.querySelector('#yearField');
+      const genre1Field = form.querySelector('#genre1Field');
+      const genre2Field = form.querySelector('#genre2Field');
 
       //Build a data string in the FORM-URLENCODED format.
       const formData = `author=${authorField.value}` + 
@@ -124,13 +124,13 @@
 
     //Uses fetch to send a postRequest. Marksed as async because we use await
     //within it.
-    const sendPostBookReview = async (addBookReviewForm) => {
+    const sendPostBookReview = async (form) => {
       //Grab all the info from the form
-      const url = addBookReviewForm.getAttribute('action');
-      const method = addBookReviewForm.getAttribute('method');
+      const url = form.getAttribute('action');
+      const method = form.getAttribute('method');
       
-      const titleField = addBookReviewForm.querySelector('#titleField');
-      const ratingField = addBookReviewForm.querySelector('#ratingField');
+      const titleField = form.querySelector('#titleField');
+      const ratingField = form.querySelector('#ratingField');
 
 
       //Build a data string in the FORM-URLENCODED format.
@@ -168,6 +168,33 @@
       handleResponse(response, method === 'get');
     };
 
+    const sendBookByTitleFetchRequest = async (form) => {
+      const url = form.getAttribute('action');
+      const method = form.querySelector('#methodSelect').value;
+
+      const titleField = form.querySelector('#titleField');
+
+      //Build a data string in the FORM-URLENCODED format.
+      const formData = `title=${titleField.value}`;
+
+      console.log("get book by title called");
+
+      //Make a fetch request and await a response. Set the method to
+      //the one provided by the form (POST). Set the headers. Content-Type
+      //is the type of data we are sending. Accept is the data we would like
+      //in response. Then add our FORM-URLENCODED string as the body of the request.
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body: formData,
+      })
+
+      handleResponse(response, method === 'get');
+    };
+
     //Init function is called when window.onload runs (set below).
     const init = () => {
       //Grab the forms
@@ -175,6 +202,7 @@
       const addBookReviewForm = document.querySelector('#addBookReviewForm');
 
       const getAllBooksForm = document.querySelector('#getAllBooksForm');
+      const getBookByTitleForm = document.querySelector('#getBookByTitleForm');
 
       // Create function that cancels the forms' default actions
       // and calls the functions above.
@@ -189,10 +217,16 @@
         sendPostBookReview(addBookReviewForm);
         return false;
       }
-
+      
       const sendAllBooks = (e) => {
         e.preventDefault();
         sendAllBooksFetchRequest(getAllBooksForm);
+        return false;
+      }
+
+      const sendBookByTitle = (e) => {
+        e.preventDefault();
+        sendBookByTitleFetchRequest(getBookByTitleForm);
         return false;
       }
 
@@ -200,7 +234,8 @@
       addBookForm.addEventListener('submit', addBook);
       addBookReviewForm.addEventListener('submit', addBookReview);
       
-      getAllBooksForm.addEventListener('submit', sendAllBooks)
+      getAllBooksForm.addEventListener('submit', sendAllBooks);
+      getBookByTitleForm.addEventListener('submit', sendBookByTitle);
     };
 
     //When the window loads, run init.
