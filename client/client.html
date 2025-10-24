@@ -49,36 +49,6 @@
 
     //Uses fetch to send a postRequest. Marksed as async because we use await
     //within it.
-    const sendPost = async (nameForm) => {
-      //Grab all the info from the form
-      const url = nameForm.getAttribute('action');
-      const method = nameForm.getAttribute('method');
-      
-      const nameField = nameForm.querySelector('#nameField');
-      const ageField = nameForm.querySelector('#ageField');
-
-      //Build a data string in the FORM-URLENCODED format.
-      const formData = `name=${nameField.value}&age=${ageField.value}`;
-
-      //Make a fetch request and await a response. Set the method to
-      //the one provided by the form (POST). Set the headers. Content-Type
-      //is the type of data we are sending. Accept is the data we would like
-      //in response. Then add our FORM-URLENCODED string as the body of the request.
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json',
-        },
-        body: formData,
-      });
-
-      //Once we have a response, handle it.
-      handleResponse(response);
-    };
-
-    //Uses fetch to send a postRequest. Marksed as async because we use await
-    //within it.
     const sendPostBook = async (form) => {
       //Grab all the info from the form
       const url = form.getAttribute('action');
@@ -189,7 +159,6 @@
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json',
         },
-        body: formData,
       })
 
       handleResponse(response, method === 'get');
@@ -245,6 +214,9 @@
 <body>
   <section id="top">
     <h1>Books API Test App</h1>
+    
+    <a href="docs">To docs</a>
+
     <hr>
     </section>
     <section id="content">
@@ -295,7 +267,7 @@
     <hr>
 
     <form id="getAllBooksForm" action="/getAllBooks" method="get">
-      <h3>Test retrieving all books</h3>
+      <h3>Retrieve all books</h3>
       <select id="methodSelect">
         <option value="get">GET</option>
         <option value="head">HEAD</option>
@@ -306,7 +278,7 @@
     <hr>
 
     <form id="getBookByTitleForm" action="/getBookByTitle" method="get">
-      <h3>Test retrieving a book by title</h3>
+      <h3>Retrieve a book by title</h3>
       <label for="title">Title: </label>
       <input id="titleField" type="text" name="title" />
       <br>
@@ -320,7 +292,7 @@
     <hr>
 
     <form id="getBooksByAuthorForm" action="/getBooksByAuthor" method="get">
-      <h3>Test retrieving books by author</h3>
+      <h3>Retrieve books by author</h3>
       <label for="author">Author: </label>
       <input id="authorField" type="text" name="author" />
       <br>
@@ -334,7 +306,7 @@
     <hr>
 
     <form id="getBooksByLanguageForm" action="/getBooksByLanguage" method="get">
-      <h3>Test retrieving books by language</h3>
+      <h3>Retrieve books by language</h3>
       <label for="language">Language: </label>
       <input id="language" type="text" name="language" />
       <br>

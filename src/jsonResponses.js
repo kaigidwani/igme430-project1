@@ -33,8 +33,13 @@ const getBookByTitle = (request, response) => {
     message: 'All fields are required.',
   };
 
+
+  // WIP testing to try to read the query parameters from the url
+  // I had help on this from Jake and Meakalia
+
+  console.log(request.query);
   // get the title field
-  const { title } = request.body;
+  const { title } = request.query.title;
 
   // .filter gets an array of items
   // use .find instead to get only the first item

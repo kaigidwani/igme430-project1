@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Books API Documentation</title>
+  <link rel="stylesheet" type="text/css" href="/style.css">
+  
+</head>
+<body>
+  <section id="top">
+    <h1>Books API Documentation</h1>
+    
+    <a href="/">To test app</a>
+
+    <hr>
+    </section>
+    <section id="content">
+    </section>
+    <hr>
+
+    <form id="addBookForm" action="/addBook" method="post">
+      <h3>Add a new book</h3>
+      <label for="author">Author: Author field string</label>
+      <br>
+      <label for="country">Country: Country field string</label>
+      <br>
+      <label for="language">Language: Language field string</label>
+      <br>
+      <label for="link">Link: Link field string</label>
+      <br>
+      <label for="pages">Pages: Pages field number</label>
+      <br>
+      <label for="title">Title: Title field string</label>
+      <br>
+      <label for="year">Year: Year field number</label>
+      <br>
+      <label for="genres">Genres: Two genre field strings</label>
+      <br>
+    </form>
+    <hr>
+
+    <form id="addBookReviewForm" action="/addBookReview" method="post">
+      <h3>Add a new book review</h3>
+      <label for="title">Title: Title field string</label>
+      <br>
+      <label for="rating">Rating: Rating field number 1-5</label>
+      <br>
+    </form>
+    <hr>
+
+    <form id="getAllBooksForm" action="/getAllBooks" method="get">
+      <h3>Retrieve all books</h3>
+      <label for="methodSelect">Method: GET or HEAD</label>
+      <br>
+    </form>
+    <hr>
+
+    <form id="getBookByTitleForm" action="/getBookByTitle" method="get">
+      <h3>Retrieve a book by title</h3>
+      <label for="title">Title: Title field string</label>
+      <br>
+      <label for="methodSelect">Method: GET or HEAD</label>
+      <br>
+    </form>
+    <hr>
+
+    <form id="getBooksByAuthorForm" action="/getBooksByAuthor" method="get">
+      <h3>Retrieve books by author</h3>
+      <label for="author">Author: Author field string</label>
+      <br>
+      <label for="methodSelect">Method: GET or HEAD</label>
+      <br>
+    </form>
+    <hr>
+
+    <form id="getBooksByLanguageForm" action="/getBooksByLanguage" method="get">
+      <h3>Retrieve books by language</h3>
+      <label for="language">Language: Language field string</label>
+      <br>
+      <label for="methodSelect">Method: GET or HEAD</label>
+      <br>
+    </form>
+    <hr><br>
+</body>
+</html>
