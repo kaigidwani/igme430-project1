@@ -132,27 +132,21 @@
         method,
         headers: {
           'Accept': 'application/json',
-        },
+        }
       });
 
       handleResponse(response, method === 'get');
     };
 
     const sendBookByTitleFetchRequest = async (form) => {
-      const url = form.getAttribute('action');
+      let url = form.getAttribute('action');
       const method = form.querySelector('#methodSelect').value;
 
       const titleField = form.querySelector('#titleField');
 
-      //Build a data string in the FORM-URLENCODED format.
-      const formData = `title=${titleField.value}`;
+      // Add query data to url
+      url += `?title=${titleField.value}`;
 
-      console.log("get book by title called");
-
-      //Make a fetch request and await a response. Set the method to
-      //the one provided by the form (POST). Set the headers. Content-Type
-      //is the type of data we are sending. Accept is the data we would like
-      //in response. Then add our FORM-URLENCODED string as the body of the request.
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -164,6 +158,46 @@
       handleResponse(response, method === 'get');
     };
 
+    const sendBooksByAuthorFetchRequest = async (form) => {
+      let url = form.getAttribute('action');
+      const method = form.querySelector('#methodSelect').value;
+
+      const authorField = form.querySelector('#authorField');
+
+      // Add query data to url
+      url += `?author=${authorField.value}`;
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+      })
+
+      handleResponse(response, method === 'get');
+    }
+
+    const sendBooksByLanguageFetchRequest = async (form) => {
+      let url = form.getAttribute('action');
+      const method = form.querySelector('#methodSelect').value;
+
+      const languageField = form.querySelector('#languageField');
+
+      // Add query data to url
+      url += `?language=${languageField.value}`;
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+      })
+
+      handleResponse(response, method === 'get');
+    }
+
     //Init function is called when window.onload runs (set below).
     const init = () => {
       //Grab the forms
@@ -172,6 +206,8 @@
 
       const getAllBooksForm = document.querySelector('#getAllBooksForm');
       const getBookByTitleForm = document.querySelector('#getBookByTitleForm');
+      const getBooksByAuthorForm = document.querySelector('#getBooksByAuthorForm');
+      const getBooksByLanguageForm = document.querySelector('#getBooksByLanguageForm');
 
       // Create function that cancels the forms' default actions
       // and calls the functions above.
@@ -199,12 +235,26 @@
         return false;
       }
 
+      const sendBooksByAuthor = (e) => {
+        e.preventDefault();
+        sendBooksByAuthorFetchRequest(getBooksByAuthorForm);
+        return false;
+      }
+
+      const sendBooksByLanguage = (e) => {
+        e.preventDefault();
+        sendBooksByLanguageFetchRequest(getBooksByLanguageForm);
+        return false;
+      }
+
       // Call functions when the submit event fires on the form.
       addBookForm.addEventListener('submit', addBook);
       addBookReviewForm.addEventListener('submit', addBookReview);
       
       getAllBooksForm.addEventListener('submit', sendAllBooks);
       getBookByTitleForm.addEventListener('submit', sendBookByTitle);
+      getBooksByAuthorForm.addEventListener('submit', sendBooksByAuthor);
+      getBooksByLanguageForm.addEventListener('submit', sendBooksByLanguage);
     };
 
     //When the window loads, run init.
@@ -308,7 +358,7 @@
     <form id="getBooksByLanguageForm" action="/getBooksByLanguage" method="get">
       <h3>Retrieve books by language</h3>
       <label for="language">Language: </label>
-      <input id="language" type="text" name="language" />
+      <input id="languageField" type="text" name="language" />
       <br>
       <select id="methodSelect">
         <option value="get">GET</option>

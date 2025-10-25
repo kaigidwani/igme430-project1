@@ -33,13 +33,8 @@ const getBookByTitle = (request, response) => {
     message: 'All fields are required.',
   };
 
-
-  // WIP testing to try to read the query parameters from the url
-  // I had help on this from Jake and Meakalia
-
-  console.log(request.query);
   // get the title field
-  const { title } = request.query.title;
+  const title = request.query.title;
 
   // .filter gets an array of items
   // use .find instead to get only the first item
@@ -54,61 +49,63 @@ const getBookByTitle = (request, response) => {
   }
 
   // Add the book to the JSON response
-  responseJSON.searchedBook = book;
+  responseJSON.books = book;
 
   return respondJSON(request, response, 200, responseJSON);
 };
 
 // return searched book by language as JSON
-const getBookByLanguage = (request, response) => {
+const getBooksByLanguage = (request, response) => {
   // default failure json message
   const responseJSON = {
-    message: 'Language field is required.',
+    message: 'All fields are required.',
   };
 
   // get the language field
-  const { language } = request.body;
-
-  // Using .filter to get array of books
+  const language = request.query.language;
+  
+  // .filter gets an array of items
+  // use .find instead to get only the first item
   const book = books.filter((b) => b.language === language);
 
-  // If no books exist with that language
+  // If the book doesn't exist
   if (!book) {
     // Update the error message and ID, and return the error
-    responseJSON.message = `No books with language ${language}`;
+    responseJSON.message = `No book with language ${language}`;
     responseJSON.id = 'bookNotFound';
     return respondJSON(request, response, 404, responseJSON);
   }
 
-  // Add the books to the JSON response
-  responseJSON.searchedBooks = book;
+  // Add the book to the JSON response
+  responseJSON.books = book;
 
   return respondJSON(request, response, 200, responseJSON);
 };
 
 // return searched book by author as JSON
-const getBookByAuthor = (request, response) => {
+const getBooksByAuthor = (request, response) => {
   // default failure json message
   const responseJSON = {
-    message: 'Author field is required.',
+    message: 'All fields are required.',
   };
 
   // get the author field
-  const { author } = request.body;
-
-  // Using .filter to get array of books
+  const author = request.query.author;
+  
+  // .filter gets an array of items
+  // use .find instead to get only the first item
   const book = books.filter((b) => b.author === author);
 
-  // If no books exist by that author
+  // If the book doesn't exist
   if (!book) {
     // Update the error message and ID, and return the error
-    responseJSON.message = `No books with author ${author}`;
+    responseJSON.message = `No book with author ${author}`;
     responseJSON.id = 'bookNotFound';
     return respondJSON(request, response, 404, responseJSON);
   }
 
-  // Add the books to the JSON response
-  responseJSON.searchedBooks = book;
+  // Add the book to the JSON response
+  responseJSON.books = book;
 
   return respondJSON(request, response, 200, responseJSON);
 };
@@ -229,8 +226,8 @@ const notFound = (request, response) => {
 module.exports = {
   getAllBooks,
   getBookByTitle,
-  getBookByLanguage,
-  getBookByAuthor,
+  getBooksByLanguage,
+  getBooksByAuthor,
   addBook,
   addBookReview,
   notFound,

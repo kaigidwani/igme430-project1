@@ -50,10 +50,10 @@ const handleGet = (request, response, parsedUrl) => {
     jsonHandler.getAllBooks(request, response);
   } else if (parsedUrl.pathname === '/getBookByTitle') {
     jsonHandler.getBookByTitle(request, response);
-  } else if (parsedUrl.pathname === '/getBookByLanguage') {
-    jsonHandler.getBookByLanguage(request, response);
-  } else if (parsedUrl.pathname === '/getBookByAuthor') {
-    jsonHandler.getBookByAuthor(request, response);
+  } else if (parsedUrl.pathname === '/getBooksByLanguage') {
+    jsonHandler.getBooksByLanguage(request, response);
+  } else if (parsedUrl.pathname === '/getBooksByAuthor') {
+    jsonHandler.getBooksByAuthor(request, response);
   } else if (parsedUrl.pathname === '/docs') {
     htmlHandler.getDocs(request, response);
   } else if (parsedUrl.pathname === '/') {
@@ -67,12 +67,8 @@ const onRequest = (request, response) => {
   // parse the url
   const protocol = request.connection.encrypted ? 'https' : 'http';
   const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
-  
-  // WIP testing to try to get query search params working.
-  // Code from my friend Meakalia
-  const {pathname, searchParams} = parsedUrl;
 
-  request.query = Object.fromEntries(searchParams);
+  request.query = Object.fromEntries(parsedUrl.searchParams);
 
   // check if it is POST, otherwise it is GET
   if (request.method === 'POST') {
